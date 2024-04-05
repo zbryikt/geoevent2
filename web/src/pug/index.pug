@@ -1,0 +1,272 @@
+extends /base.pug
+block vars
+  -
+    meta = {
+      url: "https://zbryikt.github.io/geoevent/",
+      description: "This tool helps you visualize events across time and space with bubbles of magnitude of events, and works on devices with different screen size.",
+      title: "Events Visualization",
+      description: "",
+      thumbnail: "http://zbryikt.github.io/geoevent/assets/img/thumbnail.png",
+      thumb: {type: "image/jpeg", width: "1200", height: "630"},
+      ogtype: "website"
+    };
+block prehead
+  //-script.
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52410923-1', 'auto');
+    ga('send', 'pageview');
+block head
+  +css([
+    {name: "bootstrap", path: "dist/css/bootstrap.min.css"},
+    {name: "@loadingio/bootstrap.ext"}
+  ])
+  style(type="text/css"): include:stylus index.styl
+  +script([
+    {name: "papaparse", path: "papaparse.min.js"},
+    {name: "proxise"},
+    {name: "@loadingio/debounce.js"},
+    {name: "@loadingio/ldquery"},
+    {name: "ldview"},
+    {name: "@plotdb/semver"},
+    {name: "@plotdb/rescope"},
+    {name: "@plotdb/csscope"},
+    {name: "@plotdb/block"}
+  ])
+block script
+  script(type="module"): include:lsc index.ls
+block body
+  .w-960.rwd.mx-auto.my-5
+    a#forkme(href="https://github.com/zbryikt/geoevent")
+      img(decoding="async",width="149",height="149",src="assets/img/forkme.png",alt="Fork Me on GitHub",loading="lazy")
+
+    #hero
+      .d-flex.align-items-center.justify-content-between.mb-1
+        .d-flex.g-1.align-items-center
+          img(src="assets/img/favicon.png",width="16",height="16",alt="favicon")
+          .text-sm: b Events Visualization 
+        .d-flex.g-1
+          .btn.btn-theme-default.btn-sm(ld="set-style", data-name="default") Default
+          .btn.btn-theme-gray.btn-sm(ld="set-style", data-name="gray") Gray
+          .btn.btn-theme-green.btn-sm(ld="set-style", data-name="green") Green
+      #main(ld="widget")
+      //-include widget.pug
+    #description.mt-5
+      h2 Events Visualization
+      p This tool helps you visualize events across time and space with bubbles of magnitude of events, and works on devices with different screen size. Above is an example of #[a(href="http://0media.tw/t/geoevent/widget/?src=1yY4pqGqI3rLMf5bQqe5XMztnnJ78RMUrfh-XpJdhd_o&color=default&ratio=20&=undefined&clat=12.573404&clng=-15.193685&initz=2") visualization of Islamic terrorist attacks from 1983 to 2015].
+      .mt-4
+        h4 Other showcase:
+        ul
+          li #[a(href="http://0media.tw/t/geoevent/widget/?src=17u9luNKn77I4Tyz3pPADnr6sw3yiob0Z6Dy4_FFpbl4&color=default&ratio=5&clat=20&clng=0&initz=2") Global Earthquake since 1902]
+          li #[a(href="http://0media.tw/t/geoevent/widget/?src=1weTyy3X52QginfNbrSmxjR8WpsAEgJSRjzzqBJ8RaXk&color=default&ratio=20&clat=20&clng=0&initz=2") Global Commercial Aricraft Accident] ( partial data )
+      .my-5: hr
+      h3 How to Use
+      p prepare the event data in a google spreadsheet formatted like this:
+      iframe#sample-doc.mb-4(src="https://docs.google.com/spreadsheets/d/1yY4pqGqI3rLMf5bQqe5XMztnnJ78RMUrfh-XpJdhd_o/pubhtml?widget=true&amp;headers=false")
+      p 
+        | 7 columns are required in following order: date, event, shortname, death, wounded, latitude, longitude:
+        ul
+          li #[code date]: Event date. YYYY/MM/DD or MM/DD/YYYY
+          li #[code event]: Event name. shown in timeline only if shortname is omitted
+          li #[code shortname]: short name of event for showing in timeline
+          li #[code death]: number of death
+          li #[code wounded]: number of wounded
+          li #[code latitude] and #[code longitude]: coordinate of the event 
+      p and publish the spreadsheet by clicking #[em Menu] &#xbb; #[em Publish to the Web] &#xbb; #[em Publish]. Then, Copy &amp; paste the link of the spreadsheet in this input box:
+      .form-group(ng-class="{'has-error':sid==null && datasrc}")
+        input.form-control(
+        placeholder="e.g.,https://docs.google.com/spreadsheets/d/1p0DNKBt4oNfDBgHv4ZXH-vu0bJ_PtxFFXCL7o4O_Cxo/pubhtml",
+        ld="datasrc")
+      p and setup following configuration:
+      .d-flex.g-2.flex-wrap.px-2.py-3.border.rounded.shadow-sm.justify-content-around
+        .d-flex.g-2
+          div
+            .text-sm.font-weight-bold colorschema
+            .btn-group
+              .btn.btn-theme-default.btn-sm(ld="set-style",data-name="default") Default
+              .btn.btn-theme-gray.btn-sm(ld="set-style",data-name="gray") Gray
+              .btn.btn-theme-green.btn-sm(ld="set-style",data-name="green") Green
+          div
+            .text-sm.font-weight-bold circle size
+            .btn-group
+              .btn.btn-outline-secondary.btn-sm(ld="set-ratio",data-value="1") Small
+              .btn.btn-outline-secondary.btn-sm(ld="set-ratio",data-value="5") Medium
+              .btn.btn-outline-secondary.btn-sm(ld="set-ratio",data-value="20") Large
+        .d-flex.g-2
+          div
+            .text-sm.font-weight-bold.d-flex.align-items-center
+              span.mr-2 central latlng
+              input.mr-1(type="checkbox",checked,ld="autoll")
+              .font-weight-bold.text-sm auto
+            .d-flex.g-2
+              input.form-control.form-control-sm(ld="latlng",data-name="clat",placeholder="latitude",
+              style="max-width:6.5em",disabled)
+              input.form-control.form-control-sm(ld="latlng",data-name="clng",placeholder="longitude",
+              style="max-width:6.5em",disabled)
+          div
+            .text-sm.font-weight-bold initial zoom level
+            select.form-control.form-control-sm(ld="initz",style="min-width:120px",disabled)
+              each v in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+                option(value=v)= v
+          div
+            .text-sm.font-weight-bold &nbsp;
+            .btn.btn-danger.btn-sm(ld="generate") Generate
+
+      br
+      p result looks like this:
+      iframe#result(ld="result")
+      p html code for embedding in your websites:
+      textarea.form-control(ld="embedcode",rows="5")
+      br
+      p direct link to the result page: ( #[.btn.btn-sm.btn-link(ld="open-url",target="_blank",rel="noopener noreferer") open in new tab] )
+      input.form-control(ld="url",disabled)
+      .my-4: hr
+      #footer
+        | For source code, please visit 
+        a(href="http://github.com/zbryikt/geoevent/") Github Repo
+        |  of the events visualization project.
+
+
+
+
+  //-#content(ng-app="main",ng-controller="main")
+    #layout
+      #demopanel(ng-app="0media.events",ng-controller="0media.events.main")
+        #color.form-group
+          span.pull-right
+            .btn.btn-primary.btn-sm(ng-click="setStyle('default')") Default
+            .btn.btn-default.btn-sm(ng-click="setStyle('gray')") Gray
+            .btn.btn-success.btn-sm(ng-click="setStyle('green')") Green
+          #title.btn-sm.pull-left: strong 
+            img(src="assets/img/favicon.png")
+            |  Events Visualization 
+          .clearfix
+        #main
+          include widget.pug
+      #description
+        hr
+        .fb-like.pull-right(data-share="false",data-show-faces="false",data-layout="button_count")
+        h2 Events Visualization
+        p 
+          | This tool helps you visualize events across time and space with bubbles of magnitude of events, and works on devices with different screen size. Above is an example of 
+          a(href="http://0media.tw/t/geoevent/widget/?src=1yY4pqGqI3rLMf5bQqe5XMztnnJ78RMUrfh-XpJdhd_o&color=default&ratio=20&=undefined&clat=12.573404&clng=-15.193685&initz=2") visualization of Islamic terrorist attacks from 1983 to 2015
+          | .
+          br
+          h4 Other showcase:
+          ul
+            li: a(href="http://0media.tw/t/geoevent/widget/?src=17u9luNKn77I4Tyz3pPADnr6sw3yiob0Z6Dy4_FFpbl4&color=default&ratio=5&clat=20&clng=0&initz=2") Global Earthquake since 1902
+            li 
+              a(href="http://0media.tw/t/geoevent/widget/?src=1weTyy3X52QginfNbrSmxjR8WpsAEgJSRjzzqBJ8RaXk&color=default&ratio=20&clat=20&clng=0&initz=2") Global Commercial Aricraft Accident 
+              | ( partial data )
+        hr
+        h3 How to Use
+        p prepare the event data in a google spreadsheet formatted like this:
+        iframe#sample-doc(src="https://docs.google.com/spreadsheets/d/1yY4pqGqI3rLMf5bQqe5XMztnnJ78RMUrfh-XpJdhd_o/pubhtml?widget=true&amp;headers=false")
+        br
+        br
+        p 
+          | 7 columns are required in following order: date, event, shortname, death, wounded, latitude, longitude:
+          ul
+            li 
+              em date
+              | : Event date. YYYY/MM/DD or MM/DD/YYYY
+            li 
+              em event
+              | : Event name. shown in timeline only if shortname is omitted
+            li
+              em shortname
+              | : short name of event for showing in timeline
+            li 
+              em death
+              | : number of death
+            li 
+              em wounded
+              | : number of wounded
+            li 
+              em latitude  
+              | and 
+              em longitude
+              | : coordinate of the event 
+        p 
+          | and publish the spreadsheet by clicking 
+          em "Menu"  
+          | &#xbb; 
+          em "Publish to the Web" 
+          | &#xbb;  
+          em "Publish"
+        p 
+          | Copy &amp; paste the link of the spreadsheet in this input box:
+        .form-group(ng-class="{'has-error':sid==null && datasrc}")
+          input.form-control(
+            placeholder="e.g., https://docs.google.com/spreadsheets/d/1p0DNKBt4oNfDBgHv4ZXH-vu0bJ_PtxFFXCL7o4O_Cxo/pubhtml",
+            ng-model="datasrc")
+        p and setup following configuration:
+        .form-inline
+          .form-group
+            label colorschema
+            br
+            .btn-group
+              .btn.btn-primary.btn-sm(ng-click="setStyle('default')",ng-class="{'active':style=='default'}") Default
+              .btn.btn-default.btn-sm(ng-click="setStyle('gray')",ng-class="{'active':style=='gray'}") Gray
+              .btn.btn-success.btn-sm(ng-click="setStyle('green')",ng-class="{'active':style=='green'}") Green
+          .form-group
+            label circle size
+            br
+            .btn-group
+              .btn.btn-default.btn-sm(ng-click="setRatio(1)",ng-class="{'active':ratio==1}") Small
+              .btn.btn-info.btn-sm(ng-click="setRatio(5)",ng-class="{'active':ratio==5}") Medium
+              .btn.btn-primary.btn-sm(ng-click="setRatio(20)",ng-class="{'active':ratio==20}") Large
+          .form-group
+            label
+              | central latlng &nbsp; 
+              input(type="checkbox",checked,ng-model="autoll")
+              small  auto
+            br
+            input.form-control.input-sm(style="max-width:90px",ng-model="clat",placeholder="latitude",ng-disabled="autoll")
+            input.form-control.input-sm(style="max-width:90px",ng-model="clng",placeholder="longitude",ng-disabled="autoll")
+          .form-group
+            label initial zoom level
+            br
+            select.form-control.input-sm(ng-options="v for v in zlvs",ng-model="initz",style="min-width:120px",ng-disabled="autoll")
+          .form-group
+            label &nbsp;
+            br
+            .btn.btn-danger.btn-sm(ng-click="generate()") Generate
+        br
+        p result looks like this:
+        iframe#result
+        p html code for embedding in your websites:
+        textarea.form-control(ng-model="embedcode",rows="5")
+        br
+        p 
+          | direct link to the result page: ( 
+          a(ng-attr-href="{{outurlwithhost}}",target="_blank") open in new tab
+          |  )
+        input.form-control(ng-model="outurlwithhost",ng-disabled="true")
+        br
+        hr
+        br
+        #footer
+          | For source code, please visit 
+          a(href="http://github.com/zbryikt/geoevent/") Github Repo
+          |  of the events visualization project.
+  //-
+    a#forkme(href="https://github.com/zbryikt/geoevent")
+      img(src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67",alt="Fork me on GitHub",data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png")
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '415494205294101',
+          xfbml      : true,
+          version    : 'v2.2'
+        });
+      };
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));

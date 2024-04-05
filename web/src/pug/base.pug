@@ -1,0 +1,28 @@
+//- module
+doctype html
+html(lang="en")
+  - var meta = {}
+  block vars
+  head(prefix="og: http://ogp.me/ns#")
+    meta(charset="utf-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel="preconnect",href="https://fonts.googleapis.com")
+    link(rel="preconnect",href="https://fonts.gstatic.com",crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap",rel="stylesheet")
+    title= meta.title
+    meta(property="og:url", content=meta.url)
+    meta(name="description", content=meta.description)
+    meta(property="og:title", content=meta.title)
+    meta(property="og:description", content=meta.description)
+    meta(property="og:locale",content="en")
+    meta(property="og:image",content=meta.thumbnail)
+    meta(property="og:image:type",content=meta.thumb.type || "image/jpeg")
+    meta(property="og:image:width",content=meta.thumb.width || "1200")
+    meta(property="og:image:height",content=meta.thumb.height || "630")
+    meta(property="og:type", content=meta.ogtype || "website")
+    block prehead
+    link(rel="icon",type="image/x-icon",href="assets/img/favicon.png")
+    block head
+  body
+    block body
+    block script

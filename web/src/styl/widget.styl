@@ -1,0 +1,383 @@
+#zm-event
+  width: 100%
+  height: 100%
+  padding-bottom: 40px
+  font-family: 'Open Sans', sans-serif
+
+#zm-event
+  .eventmap
+    width: 100%
+    height: 100%
+    z-index: index($order, eventmap)
+  .main-title
+    position: absolute
+    z-index: index($order, main-title)
+    top: 0
+    left: 0
+    width: 100%
+    padding: 2px 8px
+    text-align: center
+  .timeline
+    height: 100%
+    padding: 30px 0 70px 20px
+    z-index: index($order, timeline)
+    position: absolute
+    top: 0
+    left: 0
+    width: 220px
+    user-select: none
+  .timeline-inner
+    position: relative
+    border-radius: 5px
+    height: 100%
+    width: 100%
+    overflow: hidden
+    box-shadow: 0 2px 1px rgba(0,0,0,0.5)
+
+    .header
+      position: absolute
+      z-index: index($order, timeline-title)
+      top: 0
+      left: 0
+      width: 100%
+      height: 60px
+      text-align: center
+      user-select: none
+      .name
+        font-size: 1.1em
+        padding: 10px 10px 0
+        width: 100%
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+      .magsum
+        font-size: 0.8em
+
+    .background
+      position: absolute
+      top: 0
+      left: 0
+      z-index: index($order, timeline-bk)
+      width: 100%
+      height: 100%
+
+    .line-wrap
+      position: absolute
+      z-index: index($order, timeline-line)
+      padding: 72px 0 40px 15px
+      height: 100%
+    .line
+      border-radius: 5px
+      height: 100%
+      width: 4px
+
+    .events
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      margin-top: 60px
+      overflow: hidden
+    .events-inner
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      &.spd1
+        transition: top 1.6s ease-in-out
+      &.spd2
+        transition: top 0.8s ease-in-out
+      &.spd3
+        transition: top 0.3s linear
+    .event
+      position: absolute
+      top: 65px
+      width: 100%
+      z-index: index($order, timeline-event)
+      font-size: 12px
+      user-select: none
+      .desc
+        position: absolute
+        letter-spacing: 1px
+        left: 0
+        width: 100%
+        padding: 0 10px 0 30px
+        .name
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+
+    .circle
+      z-index: index($order, timeline-circle)
+      position: absolute
+      top: 4px
+      left: 17px
+      width: 8px
+      height: 8px
+      border-radius: 50%
+      margin-left: -4px
+      transition: box-shadow 0.1s linear, border 0.5s linear
+      &.lg
+        width: 12px
+        height: 12px
+        margin-left: -6px
+        top: 1px
+      &.xl
+        width: 16px
+        height: 16px
+        margin-left: -8px
+        top: 1px
+    .event.top .circle
+      border: 1px solid #fff
+
+  .ctrlpanel
+    position: absolute
+    z-index: index($order, ctrlpanel)
+    width: 200px
+    height: 30px
+    bottom: 70px
+    left: 20px
+    padding: 0 5px
+    margin-top: -10px
+    border-bottom-left-radius: 5px
+    border-bottom-right-radius: 5px
+    user-select: none
+
+    i.glyphicon
+      margin: 3px 4px
+      padding: 4px
+      display: inline-block
+      cursor: pointer
+      opacity: 0.7
+      &.active
+        opacity: 1
+        text-shadow: 0 0 3px rgba(255,255,0,1)
+
+      user-select: none
+    .speed
+      vertical-align: top
+      font-family: arial
+      font-size: 12px
+      font-weight: 900
+      line-height: 18px
+
+  .infopanel
+    z-index: index($order, subtitle)
+    width: 100%
+    height: 40px
+    text-align: center
+    font-size: 16px
+    letter-spacing: 1.5px
+    line-height: 40px
+    text-shadow: 0 2px 2px rgba(0,0,0,0.4)
+    padding: 0 10px
+    border-radius: .25em
+    user-select: none
+    .glyphicon
+      cursor: pointer
+    .action
+      position: relative
+      z-index: index($order, action)
+  .infopanel
+    .title
+      position: absolute
+      left: 0
+      padding: 0 120px 0 75px
+      width: 100%
+      white-space: no-wrap
+      .vc
+        display: inline-block
+        vertical-align: middle
+        height: 40px
+      .ib
+        display: inline-block
+        white-space: pre-wrap
+        line-height: 19px
+    .date, .title, .magsum, .c-mag2, .c-mag1
+      display: inline-block
+    .magsum
+      margin-right: 10px
+    .c-mag2, .c-mag1
+      font-size: 0.8em
+      min-width: 60px
+      text-align: right
+    //- move to media query part if needed
+    .magsum
+      display: inline-block
+      line-height: 16px
+      font-size: 12px
+      padding: 4px 0
+      & > div
+        display: block
+      small
+        display: inline-block
+        transform: scale(0.8)
+        width: 45px
+
+  .bubble
+    width: 0
+    height: 0
+    border: 4px solid #fff
+    position: absolute
+    top: 0px
+    left: 0px
+    transform: translate(-50%,-50%)
+    z-index: index($order, bubble)
+    border-radius: 50%
+    &.in
+      transition: width 1s ease-out, height 1s ease-out
+    &.out
+      transition: width 1s ease-out, height 1s ease-out, opacity 2s ease-out
+  .dimmer
+    position: absolute
+    top: 0
+    left: 0
+    z-index: index($order, dimmer)
+    display: none
+    background: rgba(128,128,128,1) url(assets/img/blurmap.jpg) center center no-repeat
+    background-size: cover
+    width: 100%
+    height: 100%
+    text-align: center
+    vertical-align: middle
+    line-height: 100%
+    color: #123
+    &:before
+      content: " "
+      display: inline-block
+      height: 50%
+      width: 0
+
+#zm-event.loading
+  padding-bottom: 0
+  .timeline
+    display: none
+  .infopanel
+    display: none
+  .ctrlpanel
+    display: none
+  .dimmer
+    display: block
+
+#zm-event .home-popover
+  position: absolute
+  top: 10px
+  right: 10px
+  background: #fff
+  padding: 1px 7px
+  border-radius: 3px
+  z-index: index($order, popover)
+  font-size: 14px
+  cursor: pointer
+  box-shadow: 0 1px 1px rgba(0,0,0,0.3)
+  &:after
+    content: " "
+    display: block
+    background: #fff
+    width: 7px
+    height: 7px
+    position: absolute
+    top: -4px
+    right: 10px
+    box-shadow: -1px -1px 1px rgba(0,0,0,0.3)
+    transform: rotate(45deg)
+
+
+/*
+@include dim-max(h,xs,#zm-event)
+  .ctrlpanel
+    border-radius: 5px
+    top: initial
+    bottom: 50px
+    width: 170px
+    left: 10px
+  .events
+    margin-top: 10px
+  .timeline-inner
+    box-shadow: none
+    .background
+      display: none
+    .header
+      display: none
+    .line-wrap
+      padding-top: 20px
+
+@include dim-max(w,xs,#zm-event)
+  .home-popover
+    font-size: 12px
+  .main-title
+    font-size: 12px
+  .ctrlpanel
+    border-radius: 5px
+    top: initial
+    bottom: 50px
+    width: 170px
+    left: 10px
+  .infopanel 
+    .title
+      font-size: 0.8em
+    .date
+      font-size: 12px
+
+  .events
+    margin-top: 10px
+  .line-wrap
+    padding-top: 20px
+    padding-bottom: 10px
+  .timeline
+    padding-bottom: 90px
+  .timeline-inner
+    box-shadow: none
+    width: 100px
+    overflow: visible
+    .background
+      display: none
+    .header
+      display: none
+  .events .event
+    .desc .name
+      display: none
+    &.top .name
+      display: inline-block
+      font-weight: 900
+
+@include dim-max(w,mc,#zm-event)
+  padding-bottom: 70px
+  .infopanel
+    margin-top: 30px
+    // move date and magsum to the top if need
+      .magsum, .date
+        position: absolute
+        z-index: index($order, infotext)
+        top: 0
+      .magsum
+        right: 5px
+      .date
+        left: 5px
+  .ctrlpanel
+    border-radius: 5px
+    top: initial
+    bottom: 50px
+    width: 170px
+    left: 10px
+    width: 100%
+    margin: 0
+    left: 0
+    bottom: 40px
+    top: initial
+    border-radius: 0
+  .timeline
+    width: 40px
+    padding-left: 0
+    overflow: visible
+    .events .desc
+      display: none
+
+@include dim-max(h,mc,#zm-event)
+  .timeline
+    display: none
+*/
+
+/*@import style/index
+*/
