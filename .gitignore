@@ -3,3 +3,4 @@
 *.log
 secret.*
 node_modules
+web/static/assets/lib
